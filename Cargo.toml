@@ -1,6 +1,6 @@
 [package]
 name = "tengfei-ff"
-version = "0.1.0"
+version = "0.1.1"
 description = "A command line tool to find files and directories by name."
 edition = "2021"
 homepage = "https://github.com/tengfei-xy/ff"
@@ -13,3 +13,5 @@ readme = "README.MD"
 [dependencies]
 structopt = "0.3.26"
 
+[[bin]]
+name="ff"
