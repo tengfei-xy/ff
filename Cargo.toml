@@ -13,5 +13,7 @@ readme = "README.MD"
 [dependencies]
 structopt = "0.3.26"
 
+[target]
 [[bin]]
 name="ff"
+path = "src/main.rs" 
