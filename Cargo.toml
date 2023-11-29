@@ -1,6 +1,6 @@
 [package]
 name = "tengfei-ff"
-version = "0.2.0"
+version = "0.3.0"
 description = "A command line tool to find files and directories by name."
 edition = "2021"
 homepage = "https://github.com/tengfei-xy/ff"
