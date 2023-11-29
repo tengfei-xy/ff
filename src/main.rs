@@ -45,23 +45,41 @@ fn main() {
     }
 }
 fn find(path: &OsStr, st: i32, target: &str) {
-    find_current_path(path, st, target);
+    if !find_current_path(path, st, target){
+        return;
+    };
     find_depth_path(path, st, target);
 }
-fn find_depth_path(path: &OsStr, st: i32, target: &str) {
-    let entries = fs::read_dir(path).expect("读取目录失败");
-    for entry in entries {
-        let entry = entry.expect("错误");
-        let file_type = entry.file_type().expect("获取文件类型错误");
-        if file_type.is_dir() {
-            find(entry.path().as_os_str(), st, target);
+fn find_depth_path(path: &OsStr, st: i32, target: &str)  -> bool{
+    let entries = fs::read_dir(path);
+    match entries {
+        Ok(entries) => {
+            for entry in entries {
+                let entry = entry.expect("错误");
+                let file_type = entry.file_type().expect("获取文件类型错误");
+                if file_type.is_dir() {
+                    find(entry.path().as_os_str(), st, target);
+                }
+            }
+        }
+        Err(err) => {
+            println!("error: {}   {:?}", path.to_str().unwrap(), err);
+            return false ;
+
         }
     }
+    return true;
 }
-fn find_current_path(path: &OsStr, st: i32, target: &str) {
-    let entries = fs::read_dir(path)
-        .map_err(|err| format!("{:?}, {}", path, err))
-        .expect("读取目录失败");
+fn find_current_path(path: &OsStr, st: i32, target: &str) -> bool{
+    let entries = match fs::read_dir(path){
+        Ok(entries) => entries,
+        Err(err) => {
+            println!("error: {}   {:?}", path.to_str().unwrap(), err);
+            return false;
+        }
+    };
+
+
     for entry in entries {
         let entry = entry.expect("错误");
         let file_type = entry.file_type().expect("获取文件类型错误");
@@ -80,6 +98,7 @@ fn find_current_path(path: &OsStr, st: i32, target: &str) {
             continue;
         }
     }
+    return true;
 }
 fn output(entry: &fs::DirEntry, str_file_name: &str) {
     if OPT.get().unwrap().of {
